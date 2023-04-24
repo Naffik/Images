@@ -3,7 +3,7 @@ services:
   app:
     build: .
     volumes:
-      - .:/django
+      - .:/code
     ports:
       - "8000:8000"
     image: app:django
