@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from user_app.models import User
+from user_app.models import User, AccountTier
 import django.contrib.auth.password_validation as validators
 from django.core import exceptions
 from rest_framework.exceptions import ValidationError
@@ -39,8 +39,11 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         if User.objects.filter(username=username).exists():
             raise ValidationError({'error': 'Username already exists'})
-
-        account = User(email=email, username=username)
+        if AccountTier.objects.filter(name='Basic').exists():
+            account_tier = AccountTier.objects.get(name='Basic')
+            account = User(email=email, username=username, account_tier=account_tier)
+        else:
+            account = User(email=email, username=username)
         account.set_password(password)
         account.save()
 
