@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from user_app.api.serializers import RegistrationSerializer, UserSerializer
@@ -43,6 +44,7 @@ class UserListView(generics.ListAPIView):
     List ViewSet for User model
     """
     serializer_class = UserSerializer
+    permissions_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return User.objects.all()
